@@ -746,12 +746,25 @@ const submissionDialog = document.querySelector('#submission-dialog');
 const submissionForm = document.querySelector('#submission-form');
 const formStatus = document.querySelector('#form-status');
 
+function normalizeFieldValue(name, value) {
+    let normalized = String(value).trim();
+    const markdownLink = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/gi;
+    if (name === 'url' || name === 'doi') {
+        const link = markdownLink.exec(normalized);
+        if (link) normalized = link[2];
+        normalized = normalized.replace(/^<(.+)>$/, '$1');
+        if (name === 'doi' && /^10\.\d{4,9}\//i.test(normalized)) normalized = `https://doi.org/${normalized}`;
+        return normalized;
+    }
+    return normalized.replace(markdownLink, '$1').trim();
+}
+
 function restoreDraft() {
     try {
         const draft = JSON.parse(localStorage.getItem(draftKey) || '{}');
         Object.entries(draft).forEach(([name, value]) => {
             const field = submissionForm.elements.namedItem(name);
-            if (field) field.value = value;
+            if (field) field.value = normalizeFieldValue(name, value);
         });
     } catch {
         localStorage.removeItem(draftKey);
@@ -781,7 +794,7 @@ document.querySelector('#ask-chatgpt').addEventListener('click', () => {
 Required schema:
 {"title":"string","url":"https:// direct paper or PDF link","author":"string","company":"string or empty","year":"YYYY","doi":"https://doi.org/... or empty","sector":"concise string","format":"Book|Deck|Essay|Essay Series|Letter|Manifesto|Memo|Op-Ed|Paper|Presentation|Report|Research|Whitepaper"}
 
-Rules: verify the title and author; prefer a legal direct PDF for url when available; use the canonical paper page otherwise; use a DOI resolver URL for doi; do not invent missing facts.
+Rules: verify the title and author; prefer a legal direct PDF for url when available; use the canonical paper page otherwise; use a DOI resolver URL for doi; do not invent missing facts. Every JSON value must be plain text—never use Markdown links, citations, or bracket notation inside a string.
 
 Existing inputs:
 ${JSON.stringify(existing)}`;
@@ -809,10 +822,11 @@ function fillFromJson(text) {
         if (value === undefined || value === null) continue;
         const field = submissionForm.elements.namedItem(name);
         if (!field) continue;
-        if (field instanceof HTMLSelectElement && ![...field.options].some(option => option.value === String(value))) {
-            throw new Error(`Unsupported format: ${value}`);
+        const cleanValue = normalizeFieldValue(name, value);
+        if (field instanceof HTMLSelectElement && ![...field.options].some(option => option.value === cleanValue)) {
+            throw new Error(`Unsupported format: ${cleanValue}`);
         }
-        field.value = String(value);
+        field.value = cleanValue;
     }
     saveDraft();
     formStatus.textContent = 'JSON pasted.';
