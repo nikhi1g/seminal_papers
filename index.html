@@ -41,11 +41,9 @@ body {
 }
 
 main {
-    width: min(640px, calc(100% - 40px));
-    margin: clamp(24px, 5vw, 64px) auto;
-    padding: clamp(24px, 5vw, 48px);
-    outline: 1px solid var(--sub);
-    border-radius: 12px;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 64px);
     animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -54,65 +52,289 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.archive-list a:hover,
-.archive-list a:focus-visible {
-    color: var(--acc);
+.page-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: clamp(28px, 4vw, 52px);
 }
 
-.archive-list {
+h1 {
     margin: 0;
+    font-size: clamp(2rem, 4vw, 4.5rem);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+}
+
+.page-header p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--sub);
+    font-size: 0.95rem;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.search-wrap {
+    position: relative;
+    flex: 1;
+}
+
+.search-wrap svg {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    width: 18px;
+    height: 18px;
+    color: var(--sub);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+#paper-search {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+#paper-search:focus {
+    border-color: var(--acc);
+    box-shadow: inset 3px 0 0 var(--acc);
+}
+
+.result-count {
+    min-width: 6.5rem;
+    color: var(--sub);
+    font-size: 0.82rem;
+    text-align: right;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid var(--fg);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th {
+    padding: 0.8rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--sub);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+th:first-child,
+td:first-child {
+    padding-left: 0;
+}
+
+th:last-child,
+td:last-child {
+    padding-right: 0;
+}
+
+.sort-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 0;
     padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--line);
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
 }
 
-.archive-list li {
-    padding: 0.62rem 0 0.7rem 0.45rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+.sort-button:hover,
+.sort-button:focus-visible {
+    color: var(--fg);
 }
 
-.archive-list a {
+.sort-mark {
+    width: 0.8rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 66%, transparent);
+    font-size: 0.84rem;
+    vertical-align: top;
+}
+
+tbody tr {
+    transition: background-color 140ms ease;
+}
+
+tbody tr:hover {
+    background: color-mix(in srgb, var(--acc) 5%, transparent);
+}
+
+.title-cell {
+    font-size: 0.98rem;
+    font-weight: 570;
+    line-height: 1.35;
+}
+
+.title-cell a {
     color: inherit;
     text-decoration: none;
-    text-decoration-color: var(--acc);
-    text-underline-offset: 0.18em;
-    transition: color 0.2s ease;
 }
 
-.archive-list a:hover,
-.archive-list a:focus-visible {
+.title-cell a:hover,
+.title-cell a:focus-visible {
+    color: var(--acc);
     text-decoration: underline;
+    text-underline-offset: 0.18em;
+}
+
+.doi {
+    display: inline-block;
+    margin-left: 0.4rem;
+    color: var(--sub);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.sector {
+    display: inline-block;
+    border: 1px solid var(--line);
+    padding: 0.16rem 0.4rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
+}
+
+.mobile-meta {
+    display: none;
+    margin-top: 0.38rem;
+    color: var(--sub);
+    font-size: 0.72rem;
+    font-weight: 400;
+}
+
+.citation-link {
+    margin-left: 0.45rem;
+    color: var(--sub) !important;
+    font-size: 0.78em;
+    white-space: nowrap;
 }
 
 @media (max-width: 600px) {
     main {
-        width: 100%;
-        min-height: 100vh;
-        margin: 0;
-        padding: 1.5rem;
-        border-radius: 0;
-        outline: none;
+        padding: 1.4rem;
+    }
+
+    .page-header {
+        display: block;
+        margin-bottom: 1.8rem;
+    }
+
+    .page-header p {
+        margin-top: 0.8rem;
+        font-size: 0.82rem;
+    }
+
+    .toolbar {
+        display: block;
+    }
+
+    .result-count {
+        margin-top: 0.55rem;
+        text-align: left;
+    }
+
+    th:not(:first-child),
+    td:not(:first-child) {
+        display: none;
+    }
+
+    col:first-child {
+        width: 100% !important;
+    }
+
+    col:not(:first-child) {
+        display: none;
+    }
+
+    th,
+    td {
+        padding: 0.75rem 0;
+    }
+
+    .mobile-meta {
+        display: block;
     }
 }
 </style>
 </head>
 <body>
 <main>
-    <ul class="archive-list" aria-label="Seminal paper links">
+    <header class="page-header">
+        <h1>Seminal Papers</h1>
+        <p>Essays, memos, papers, and decks that changed how industries think.</p>
+    </header>
+    <div class="toolbar">
+        <label class="search-wrap" for="paper-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <input id="paper-search" type="search" placeholder="Search titles, authors, companies, sectors…" autocomplete="off">
+        </label>
+        <div class="result-count" id="result-count" aria-live="polite">89 results</div>
+    </div>
+    <div class="table-wrap">
+        <table aria-label="Seminal papers">
+            <colgroup><col style="width: 37%"><col style="width: 7%"><col style="width: 16%"><col style="width: 13%"><col style="width: 16%"><col style="width: 11%"></colgroup>
+            <thead><tr>
+                <th><button class="sort-button" data-key="title">Title <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="year">Year <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="author">Author <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="company">Company <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="sector">Sector <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="format">Format <span class="sort-mark">↕</span></button></th>
+            </tr></thead>
+            <tbody id="paper-rows"></tbody>
+        </table>
+    </div>
+    <ul class="archive-list" aria-label="Seminal paper links" hidden>
             <li><a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer Electronic Cash System</a></li>
-            <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></li>
-            <li><a href="https://situational-awareness.ai/">Situational Awareness: The Decade Ahead</a></li>
-            <li><a href="https://www.journals.uchicago.edu/doi/10.1086/260062">The Pricing of Options and Corporate Liabilities</a></li>
+            <li><a href="https://arxiv.org/pdf/1706.03762">Attention Is All You Need</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.1706.03762" aria-label="DOI citation for Attention Is All You Need">DOI</a></li>
+            <li><a href="https://situational-awareness.ai/wp-content/uploads/2024/06/situationalawareness.pdf">Situational Awareness: The Decade Ahead</a></li>
+            <li><a href="https://www.journals.uchicago.edu/doi/pdf/10.1086/260062">The Pricing of Options and Corporate Liabilities</a><a class="citation-link" href="https://doi.org/10.1086/260062" aria-label="DOI citation for The Pricing of Options and Corporate Liabilities">DOI</a></li>
             <li><a href="https://a16z.com/why-software-is-eating-the-world/">Why Software Is Eating the World</a></li>
             <li><a href="https://www.tesla.com/en_in/secret-master-plan">The Secret Tesla Motors Master Plan (just between you and me)</a></li>
             <li><a href="https://ethereum.org/en/whitepaper/">Ethereum Whitepaper: A Next-Generation Smart Contract Platform</a></li>
             <li><a href="http://news.bbc.co.uk/2/shared/bsp/hi/pdfs/18_06_08_internet%20tidal%20wave.pdf">The Internet Tidal Wave</a></li>
-            <li><a href="https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf">The Anatomy of a Large-Scale Hypertextual Web Search Engine</a></li>
+            <li><a href="https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf">The Anatomy of a Large-Scale Hypertextual Web Search Engine</a><a class="citation-link" href="https://doi.org/10.1016/S0169-7552(98)00110-X" aria-label="DOI citation for The Anatomy of a Large-Scale Hypertextual Web Search Engine">DOI</a></li>
             <li><a href="https://www.sequoiacap.com/article/rip-good-times/">RIP Good Times</a></li>
             <li><a href="https://www.superinvesting.com/pdf/The-Superinvestors-of-Graham-and-Doddsville-by-Warren-Buffett.pdf">The Superinvestors of Graham-and-Doddsville</a></li>
-            <li><a href="https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</a></li>
+            <li><a href="https://papers.nips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</a></li>
             <li><a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a></li>
-            <li><a href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners (GPT-3)</a></li>
+            <li><a href="https://arxiv.org/pdf/2005.14165">Language Models are Few-Shot Learners (GPT-3)</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.2005.14165" aria-label="DOI citation for Language Models are Few-Shot Learners">DOI</a></li>
             <li><a href="https://w3.org/History/1989/proposal.html">Information Management: A Proposal</a></li>
             <li><a href="https://www.michael-burry.com/scion-capital-michael-burrys-letters-to-investors/">Scion Capital Letters (Subprime Short)</a></li>
             <li><a href="https://blakemasters.tumblr.com/peter-thiels-cs183-startup">Zero to One</a></li>
@@ -131,9 +353,9 @@ main {
             <li><a href="https://greylock.com/greymatter/the-new-moats/">The New Moats</a></li>
             <li><a href="https://www.forentrepreneurs.com/saas-metrics-2/">SaaS Metrics 2.0</a></li>
             <li><a href="https://hackmd.io/@HaydenAdams/HJ9jLsfTz">Uniswap Whitepaper (Automated Market Maker)</a></li>
-            <li><a href="https://arxiv.org/abs/2001.08361">Scaling Laws for Neural Language Models</a></li>
-            <li><a href="https://arxiv.org/abs/2203.15556">Training Compute-Optimal Large Language Models (Chinchilla)</a></li>
-            <li><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1: Incentivizing Reasoning Capability via RL</a></li>
+            <li><a href="https://arxiv.org/pdf/2001.08361">Scaling Laws for Neural Language Models</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.2001.08361" aria-label="DOI citation for Scaling Laws for Neural Language Models">DOI</a></li>
+            <li><a href="https://arxiv.org/pdf/2203.15556">Training Compute-Optimal Large Language Models (Chinchilla)</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.2203.15556" aria-label="DOI citation for Training Compute-Optimal Large Language Models">DOI</a></li>
+            <li><a href="https://arxiv.org/pdf/2501.12948">DeepSeek-R1: Incentivizing Reasoning Capability via RL</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.2501.12948" aria-label="DOI citation for DeepSeek-R1">DOI</a></li>
             <li><a href="https://karpathy.medium.com/software-2-0-a64152b37c35">Software 2.0</a></li>
             <li><a href="https://moores.samaltman.com/">Moore's Law for Everything</a></li>
             <li><a href="https://a16z.com/ai-will-save-the-world/">Why AI Will Save the World</a></li>
@@ -178,8 +400,8 @@ main {
             <li><a href="https://cdn.gmtresearch.com/public-ckfinder/Short-sellers/Unknown%20author/Luckin%20Coffee_Anonymous.pdf">Luckin Coffee (Anonymous Report Distributed by Muddy Waters)</a></li>
             <li><a href="https://www.slideshare.net/slideshow/facebooks-original-pitch-deckpdf/259577117">Facebook (thefacebook) Media Kit / Early Pitch</a></li>
             <li><a href="https://www.battery.com/powered/">OpenCloud Report</a></li>
-            <li><a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition (ResNet)</a></li>
-            <li><a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations (word2vec)</a></li>
+            <li><a href="https://arxiv.org/pdf/1512.03385">Deep Residual Learning for Image Recognition (ResNet)</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.1512.03385" aria-label="DOI citation for Deep Residual Learning for Image Recognition">DOI</a></li>
+            <li><a href="https://arxiv.org/pdf/1301.3781">Efficient Estimation of Word Representations (word2vec)</a><a class="citation-link" href="https://doi.org/10.48550/arXiv.1301.3781" aria-label="DOI citation for Efficient Estimation of Word Representations">DOI</a></li>
             <li><a href="https://solana.com/solana-whitepaper.pdf">Solana: A New Architecture for a High Performance Blockchain</a></li>
             <li><a href="https://en.wikipedia.org/wiki/Superintelligence:_Paths,_Dangers,_Strategies">Superintelligence: Paths, Dangers, Strategies</a></li>
             <li><a href="https://sites.santafe.edu/~wbarthur/Papers/HBR.pdf">Increasing Returns and the New World of Business</a></li>
@@ -190,5 +412,77 @@ main {
             <li><a href="https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1957.102664472.pdf">A Proposal to American Research and Development</a></li>
     </ul>
 </main>
+<script>
+const metadata = [["Satoshi Nakamoto","2008","Whitepaper","Technical Paper"],["Vaswani et al. (Google)","2017","Paper","Technical Paper"],["Leopold Aschenbrenner","2024","Essay","AI Essay"],["Fischer Black, Myron Scholes","1973","Paper","Technical Paper"],["Marc Andreessen","2011","Essay","VC Doctrine"],["Elon Musk","2006","Essay","Worldview"],["Vitalik Buterin","2013","Whitepaper","Technical Paper"],["Bill Gates","1995","Memo","Worldview"],["Sergey Brin, Lawrence Page","1998","Paper","Technical Paper"],["Sequoia Capital","2008","Deck","VC Doctrine"],["Warren Buffett","1984","Essay","Macro Memo"],["Krizhevsky, Sutskever, Hinton","2012","Paper","Technical Paper"],["Rich Sutton","2019","Essay","AI Essay"],["Brown et al. (OpenAI)","2020","Paper","Technical Paper"],["Tim Berners-Lee","1989","Paper","Technical Paper"],["Michael Burry","2006","Letter","Short / Activist"],["Peter Thiel & Blake Masters","2014","Book","Worldview"],["Sequoia Capital","2022","Deck","VC Doctrine"],["Paul Graham","2013","Essay","VC Doctrine"],["Paul Graham","2012","Essay","VC Doctrine"],["Peter Thiel","2014","Essay","VC Doctrine"],["Ben Thompson","2015","Essay","VC Doctrine"],["Bill Gurley","2012","Essay","VC Doctrine"],["Kevin Kelly","2008","Essay","VC Doctrine"],["Reid Hoffman & Chris Yeh","2016","Essay","VC Doctrine"],["Chris Dixon","2010","Essay","VC Doctrine"],["Chris Dixon","2018","Essay","VC Doctrine"],["Eugene Wei","2018","Essay","VC Doctrine"],["Founders Fund (Bruce Gibney)","2011","Manifesto","VC Doctrine"],["Jerry Chen","2016","Essay","VC Doctrine"],["David Skok","2013","Essay","VC Doctrine"],["Hayden Adams","2018","Whitepaper","Technical Paper"],["Kaplan et al. (OpenAI)","2020","Paper","Technical Paper"],["Hoffmann et al. (DeepMind)","2022","Paper","Technical Paper"],["DeepSeek","2025","Paper","Technical Paper"],["Andrej Karpathy","2017","Essay","AI Essay"],["Sam Altman","2021","Essay","AI Essay"],["Marc Andreessen","2023","Essay","AI Essay"],["Dario Amodei","2024","Essay","AI Essay"],["Howard Marks","2022","Memo","Macro Memo"],["Howard Marks","2007","Memo","Macro Memo"],["Zoltan Pozsar","2022","Memo","Macro Memo"],["Ray Dalio","2020","Essay","Macro Memo"],["Jeremy Grantham","2021","Memo","Macro Memo"],["Warren Buffett","2008","Op-Ed","Macro Memo"],["Lyn Alden","2020","Essay","Macro Memo"],["Bill Ackman / Pershing Square","2012","Deck","Short / Activist"],["David Einhorn / Greenlight","2008","Presentation","Short / Activist"],["Jim Chanos / Kynikos","2001","Research","Short / Activist"],["Carson Block / Muddy Waters","2011","Report","Short / Activist"],["Hindenburg Research","2020","Report","Short / Activist"],["Hindenburg Research","2023","Report","Short / Activist"],["Andrew Left / Citron Research","2015","Report","Short / Activist"],["Mary Meeker","1995","Deck","Sector Report"],["Mary Meeker / BOND","2025","Deck","Sector Report"],["Benedict Evans","2014","Deck","Sector Report"],["ARK Invest (Cathie Wood)","2017","Report","Sector Report"],["Airbnb (Brian Chesky et al.)","2009","Deck","Pitch Deck"],["Uber (Garrett Camp / Travis Kalanick)","2008","Deck","Pitch Deck"],["Roelof Botha / Sequoia Capital","2005","Memo","Pitch Deck"],["James Dale Davidson & Lord William Rees-Mogg","1997","Book","Worldview"],["Marc Andreessen","2023","Manifesto","Worldview"],["Holden Karnofsky","2021","Essay Series","Worldview"],["Scott Alexander","2014","Essay","Worldview"],["William MacAskill","2022","Book","Worldview"],["Eliezer Yudkowsky","2022","Essay","Worldview"],["Patrick Collison & Tyler Cowen","2019","Essay","Worldview"],["Gwern Branwen","2020","Essay","Worldview"],["Joel Monegro / USV","2016","Essay","Crypto"],["Vijay Boyapati","2018","Essay","Crypto"],["Nikhil Basu Trivedi","2020","Essay","VC Doctrine"],["Chamath Palihapitiya","2020","Letter","Crypto"],["Eric Ries","2011","Book","VC Doctrine"],["Ray Dalio","2018","Book","Macro Memo"],["Jeremy Grantham","2009","Memo","Macro Memo"],["David Einhorn / Greenlight","2002","Presentation","Short / Activist"],["Muddy Waters / Carson Block","2020","Report","Short / Activist"],["Facebook","2004","Deck","Pitch Deck"],["Battery Ventures","2012","Report","Sector Report"],["He, Zhang, Ren, Sun (Microsoft)","2015","Paper","Technical Paper"],["Mikolov et al. (Google)","2013","Paper","Technical Paper"],["Anatoly Yakovenko","2017","Whitepaper","Technical Paper"],["Nick Bostrom","2014","Book","Worldview"],["W. Brian Arthur","1996","Essay","Worldview"],["Claude Shannon","1948","Paper","Technical Paper"],["Harry Markopolos","2005","Report","Short / Activist"],["Jack Dorsey","2026","Letter","Worldview"],["Arthur Rock / Eugene Kleiner","1957","Letter","Pitch Deck"],["Ken Olsen / Harlan Anderson","1957","Memo","Pitch Deck"]];
+
+const companies = {2:"Google",10:"Sequoia Capital",14:"OpenAI",18:"Sequoia Capital",29:"Founders Fund",33:"OpenAI",34:"DeepMind",35:"DeepSeek",47:"Pershing Square",48:"Greenlight Capital",49:"Kynikos Associates",50:"Muddy Waters",51:"Hindenburg Research",52:"Hindenburg Research",53:"Citron Research",55:"BOND",57:"ARK Invest",58:"Airbnb",59:"Uber",60:"Sequoia Capital",69:"USV",72:"Social Capital",77:"Muddy Waters",78:"Facebook",79:"Battery Ventures",80:"Microsoft",81:"Google",87:"Block"};
+const sourceItems = [...document.querySelectorAll('.archive-list li')];
+const papers = sourceItems.map((item, index) => {
+    const links = [...item.querySelectorAll('a')];
+    const [author, year, format, sector] = metadata[index];
+    return {index, title: links[0].textContent.trim(), url: links[0].href, doi: links[1]?.href || '', author, year, format, sector, company: companies[index + 1] || ''};
+});
+
+const rows = document.querySelector('#paper-rows');
+const search = document.querySelector('#paper-search');
+const count = document.querySelector('#result-count');
+let sortState = {key: null, direction: 0};
+
+function fuzzyScore(text, query) {
+    const haystack = text.toLowerCase();
+    const needle = query.toLowerCase().trim();
+    if (!needle) return 0;
+    if (haystack.includes(needle)) return 1000 - haystack.indexOf(needle);
+    const tokens = needle.split(/\s+/);
+    let score = 0;
+    for (const token of tokens) {
+        const direct = haystack.indexOf(token);
+        if (direct >= 0) { score += 180 - direct; continue; }
+        let position = -1;
+        let gap = 0;
+        for (const char of token) {
+            const next = haystack.indexOf(char, position + 1);
+            if (next < 0) { gap += 40; continue; }
+            if (position >= 0) gap += next - position - 1;
+            position = next;
+        }
+        score += Math.max(0, 90 - gap);
+    }
+    return score;
+}
+
+function render() {
+    const query = search.value;
+    const ranked = papers.map(paper => ({...paper, score: fuzzyScore(Object.values(paper).join(' '), query)}));
+    ranked.sort((a, b) => {
+        if (query) return b.score - a.score || a.index - b.index;
+        if (!sortState.direction) return a.index - b.index;
+        const left = sortState.key === 'year' ? Number(a.year) : a[sortState.key].toLowerCase();
+        const right = sortState.key === 'year' ? Number(b.year) : b[sortState.key].toLowerCase();
+        return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
+    });
+    rows.innerHTML = ranked.map(paper => `<tr>
+        <td class="title-cell"><a href="${paper.url}">${paper.title}</a>${paper.doi ? `<a class="doi" href="${paper.doi}" aria-label="DOI citation for ${paper.title}">DOI</a>` : ''}<span class="mobile-meta">${paper.year} · ${paper.author} · ${paper.sector}</span></td>
+        <td>${paper.year}</td><td>${paper.author}</td><td>${paper.company || '—'}</td><td><span class="sector">${paper.sector}</span></td><td>${paper.format}</td>
+    </tr>`).join('');
+    count.textContent = query ? `89 results · ranked` : '89 results';
+}
+
+search.addEventListener('input', () => {
+    sortState = {key: null, direction: 0};
+    document.querySelectorAll('.sort-mark').forEach(mark => mark.textContent = '↕');
+    render();
+});
+
+document.querySelectorAll('.sort-button').forEach(button => button.addEventListener('click', () => {
+    const key = button.dataset.key;
+    sortState = sortState.key === key ? {key, direction: sortState.direction === 1 ? -1 : sortState.direction === -1 ? 0 : 1} : {key, direction: 1};
+    search.value = '';
+    document.querySelectorAll('.sort-button').forEach(candidate => candidate.querySelector('.sort-mark').textContent = candidate === button && sortState.direction ? (sortState.direction === 1 ? '↑' : '↓') : '↕');
+    render();
+}));
+
+render();
+</script>
 </body>
 </html>
