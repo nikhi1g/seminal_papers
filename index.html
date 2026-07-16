@@ -53,6 +53,10 @@ main {
 }
 
 .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     margin-bottom: clamp(28px, 4vw, 52px);
 }
 
@@ -62,6 +66,147 @@ h1 {
     font-weight: 650;
     letter-spacing: -0.055em;
     line-height: 0.95;
+}
+
+.add-button,
+.dialog-close {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+.add-button:hover,
+.add-button:focus-visible,
+.dialog-close:hover,
+.dialog-close:focus-visible {
+    border-color: var(--fg);
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    transform: rotate(90deg);
+}
+
+dialog {
+    width: min(640px, calc(100% - 2rem));
+    max-height: calc(100svh - 2rem);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(3px);
+}
+
+.dialog-inner {
+    padding: clamp(1.4rem, 4vw, 2.5rem);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dialog-header h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    letter-spacing: -0.04em;
+}
+
+.dialog-close {
+    border: 0;
+    font-size: 1.35rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.form-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.form-field.wide {
+    grid-column: 1 / -1;
+}
+
+.form-field label {
+    color: var(--sub);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.form-field input,
+.form-field select {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 0.72rem 0.8rem;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: var(--acc);
+    box-shadow: inset 3px 0 0 var(--acc);
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.submit-button {
+    border: 1px solid var(--fg);
+    border-radius: 0;
+    padding: 0.72rem 1rem;
+    background: var(--fg);
+    color: var(--bg);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submit-button:hover,
+.submit-button:focus-visible {
+    background: var(--acc);
+    border-color: var(--acc);
+}
+
+.form-status {
+    flex: 1;
+    margin: 0;
+    color: var(--sub);
+    font-size: 0.75rem;
 }
 
 .toolbar {
@@ -240,8 +385,20 @@ tbody tr:focus-visible {
     }
 
     .page-header {
-        display: block;
         margin-bottom: 1.8rem;
+    }
+
+    .add-button {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.wide {
+        grid-column: auto;
     }
 
     .toolbar {
@@ -276,6 +433,7 @@ tbody tr:focus-visible {
 <main>
     <header class="page-header">
         <h1>Seminal Papers</h1>
+        <button class="add-button" id="open-submission" type="button" aria-label="Submit a paper">+</button>
     </header>
     <div class="toolbar">
         <label class="search-wrap" for="paper-search">
@@ -389,12 +547,36 @@ tbody tr:focus-visible {
             <li><a href="https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1957.102664472.pdf">A Proposal to American Research and Development</a></li>
     </ul>
 </main>
+<dialog id="submission-dialog" aria-labelledby="submission-title">
+    <div class="dialog-inner">
+        <header class="dialog-header">
+            <h2 id="submission-title">Submit a paper</h2>
+            <button class="dialog-close" id="close-submission" type="button" aria-label="Close submission form">×</button>
+        </header>
+        <form id="submission-form">
+            <div class="form-grid">
+                <div class="form-field wide"><label for="submission-paper-title">Title</label><input id="submission-paper-title" name="title" required maxlength="180"></div>
+                <div class="form-field wide"><label for="submission-link">Direct link</label><input id="submission-link" name="url" type="url" required maxlength="500" placeholder="https://"></div>
+                <div class="form-field"><label for="submission-author">Author</label><input id="submission-author" name="author" required maxlength="160"></div>
+                <div class="form-field"><label for="submission-company">Company</label><input id="submission-company" name="company" maxlength="120"></div>
+                <div class="form-field"><label for="submission-year">Year</label><input id="submission-year" name="year" type="number" required min="1800" max="2100" inputmode="numeric"></div>
+                <div class="form-field"><label for="submission-doi">DOI link</label><input id="submission-doi" name="doi" type="url" maxlength="500" placeholder="https://doi.org/"></div>
+                <div class="form-field"><label for="submission-sector">Sector</label><select id="submission-sector" name="sector" required><option value="">Select</option><option>AI Essay</option><option>Crypto</option><option>Macro Memo</option><option>Pitch Deck</option><option>Sector Report</option><option>Short / Activist</option><option>Technical Paper</option><option>VC Doctrine</option><option>Worldview</option></select></div>
+                <div class="form-field"><label for="submission-format">Format</label><select id="submission-format" name="format" required><option value="">Select</option><option>Book</option><option>Deck</option><option>Essay</option><option>Essay Series</option><option>Letter</option><option>Manifesto</option><option>Memo</option><option>Op-Ed</option><option>Paper</option><option>Presentation</option><option>Report</option><option>Research</option><option>Whitepaper</option></select></div>
+            </div>
+            <div class="form-actions">
+                <p class="form-status" id="form-status" aria-live="polite"></p>
+                <button class="submit-button" type="submit">Continue to GitHub</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 <script>
 const metadata = [["Satoshi Nakamoto","2008","Whitepaper","Technical Paper"],["Vaswani et al. (Google)","2017","Paper","Technical Paper"],["Leopold Aschenbrenner","2024","Essay","AI Essay"],["Fischer Black, Myron Scholes","1973","Paper","Technical Paper"],["Marc Andreessen","2011","Essay","VC Doctrine"],["Elon Musk","2006","Essay","Worldview"],["Vitalik Buterin","2013","Whitepaper","Technical Paper"],["Bill Gates","1995","Memo","Worldview"],["Sergey Brin, Lawrence Page","1998","Paper","Technical Paper"],["Sequoia Capital","2008","Deck","VC Doctrine"],["Warren Buffett","1984","Essay","Macro Memo"],["Krizhevsky, Sutskever, Hinton","2012","Paper","Technical Paper"],["Rich Sutton","2019","Essay","AI Essay"],["Brown et al. (OpenAI)","2020","Paper","Technical Paper"],["Tim Berners-Lee","1989","Paper","Technical Paper"],["Michael Burry","2006","Letter","Short / Activist"],["Peter Thiel & Blake Masters","2014","Book","Worldview"],["Sequoia Capital","2022","Deck","VC Doctrine"],["Paul Graham","2013","Essay","VC Doctrine"],["Paul Graham","2012","Essay","VC Doctrine"],["Peter Thiel","2014","Essay","VC Doctrine"],["Ben Thompson","2015","Essay","VC Doctrine"],["Bill Gurley","2012","Essay","VC Doctrine"],["Kevin Kelly","2008","Essay","VC Doctrine"],["Reid Hoffman & Chris Yeh","2016","Essay","VC Doctrine"],["Chris Dixon","2010","Essay","VC Doctrine"],["Chris Dixon","2018","Essay","VC Doctrine"],["Eugene Wei","2018","Essay","VC Doctrine"],["Founders Fund (Bruce Gibney)","2011","Manifesto","VC Doctrine"],["Jerry Chen","2016","Essay","VC Doctrine"],["David Skok","2013","Essay","VC Doctrine"],["Hayden Adams","2018","Whitepaper","Technical Paper"],["Kaplan et al. (OpenAI)","2020","Paper","Technical Paper"],["Hoffmann et al. (DeepMind)","2022","Paper","Technical Paper"],["DeepSeek","2025","Paper","Technical Paper"],["Andrej Karpathy","2017","Essay","AI Essay"],["Sam Altman","2021","Essay","AI Essay"],["Marc Andreessen","2023","Essay","AI Essay"],["Dario Amodei","2024","Essay","AI Essay"],["Howard Marks","2022","Memo","Macro Memo"],["Howard Marks","2007","Memo","Macro Memo"],["Zoltan Pozsar","2022","Memo","Macro Memo"],["Ray Dalio","2020","Essay","Macro Memo"],["Jeremy Grantham","2021","Memo","Macro Memo"],["Warren Buffett","2008","Op-Ed","Macro Memo"],["Lyn Alden","2020","Essay","Macro Memo"],["Bill Ackman / Pershing Square","2012","Deck","Short / Activist"],["David Einhorn / Greenlight","2008","Presentation","Short / Activist"],["Jim Chanos / Kynikos","2001","Research","Short / Activist"],["Carson Block / Muddy Waters","2011","Report","Short / Activist"],["Hindenburg Research","2020","Report","Short / Activist"],["Hindenburg Research","2023","Report","Short / Activist"],["Andrew Left / Citron Research","2015","Report","Short / Activist"],["Mary Meeker","1995","Deck","Sector Report"],["Mary Meeker / BOND","2025","Deck","Sector Report"],["Benedict Evans","2014","Deck","Sector Report"],["ARK Invest (Cathie Wood)","2017","Report","Sector Report"],["Airbnb (Brian Chesky et al.)","2009","Deck","Pitch Deck"],["Uber (Garrett Camp / Travis Kalanick)","2008","Deck","Pitch Deck"],["Roelof Botha / Sequoia Capital","2005","Memo","Pitch Deck"],["James Dale Davidson & Lord William Rees-Mogg","1997","Book","Worldview"],["Marc Andreessen","2023","Manifesto","Worldview"],["Holden Karnofsky","2021","Essay Series","Worldview"],["Scott Alexander","2014","Essay","Worldview"],["William MacAskill","2022","Book","Worldview"],["Eliezer Yudkowsky","2022","Essay","Worldview"],["Patrick Collison & Tyler Cowen","2019","Essay","Worldview"],["Gwern Branwen","2020","Essay","Worldview"],["Joel Monegro / USV","2016","Essay","Crypto"],["Vijay Boyapati","2018","Essay","Crypto"],["Nikhil Basu Trivedi","2020","Essay","VC Doctrine"],["Chamath Palihapitiya","2020","Letter","Crypto"],["Eric Ries","2011","Book","VC Doctrine"],["Ray Dalio","2018","Book","Macro Memo"],["Jeremy Grantham","2009","Memo","Macro Memo"],["David Einhorn / Greenlight","2002","Presentation","Short / Activist"],["Muddy Waters / Carson Block","2020","Report","Short / Activist"],["Facebook","2004","Deck","Pitch Deck"],["Battery Ventures","2012","Report","Sector Report"],["He, Zhang, Ren, Sun (Microsoft)","2015","Paper","Technical Paper"],["Mikolov et al. (Google)","2013","Paper","Technical Paper"],["Anatoly Yakovenko","2017","Whitepaper","Technical Paper"],["Nick Bostrom","2014","Book","Worldview"],["W. Brian Arthur","1996","Essay","Worldview"],["Claude Shannon","1948","Paper","Technical Paper"],["Harry Markopolos","2005","Report","Short / Activist"],["Jack Dorsey","2026","Letter","Worldview"],["Arthur Rock / Eugene Kleiner","1957","Letter","Pitch Deck"],["Ken Olsen / Harlan Anderson","1957","Memo","Pitch Deck"]];
 
 const companies = {2:"Google",10:"Sequoia Capital",14:"OpenAI",18:"Sequoia Capital",29:"Founders Fund",33:"OpenAI",34:"DeepMind",35:"DeepSeek",47:"Pershing Square",48:"Greenlight Capital",49:"Kynikos Associates",50:"Muddy Waters",51:"Hindenburg Research",52:"Hindenburg Research",53:"Citron Research",55:"BOND",57:"ARK Invest",58:"Airbnb",59:"Uber",60:"Sequoia Capital",69:"USV",72:"Social Capital",77:"Muddy Waters",78:"Facebook",79:"Battery Ventures",80:"Microsoft",81:"Google",87:"Block"};
 const sourceItems = [...document.querySelectorAll('.archive-list li')];
-const papers = sourceItems.map((item, index) => {
+let papers = sourceItems.map((item, index) => {
     const links = [...item.querySelectorAll('a')];
     const [author, year, format, sector] = metadata[index];
     return {index, title: links[0].textContent.trim(), url: links[0].href, doi: links[1]?.href || '', author, year, format, sector, company: companies[index + 1] || ''};
@@ -403,6 +585,10 @@ const papers = sourceItems.map((item, index) => {
 const rows = document.querySelector('#paper-rows');
 const search = document.querySelector('#paper-search');
 let sortState = {key: null, direction: 0};
+
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[character]));
+}
 
 function fuzzyScore(text, query) {
     const haystack = text.toLowerCase();
@@ -437,9 +623,9 @@ function render() {
         const right = sortState.key === 'year' ? Number(b.year) : b[sortState.key].toLowerCase();
         return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
     });
-    rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${paper.url}" aria-label="Open ${paper.title}">
-        <td class="title-cell"><a href="${paper.url}">${paper.title}</a>${paper.doi ? `<a class="doi" href="${paper.doi}" aria-label="DOI citation for ${paper.title}">DOI</a>` : ''}<span class="mobile-meta">${paper.year} · ${paper.author} · ${paper.sector}</span></td>
-        <td>${paper.year}</td><td>${paper.author}</td><td>${paper.company || '—'}</td><td><span class="sector">${paper.sector}</span></td><td>${paper.format}</td>
+    rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${escapeHtml(paper.url)}" aria-label="Open ${escapeHtml(paper.title)}">
+        <td class="title-cell"><a href="${escapeHtml(paper.url)}">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" aria-label="DOI citation for ${escapeHtml(paper.title)}">DOI</a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
+        <td>${escapeHtml(paper.year)}</td><td>${escapeHtml(paper.author)}</td><td>${escapeHtml(paper.company || '—')}</td><td><span class="sector">${escapeHtml(paper.sector)}</span></td><td>${escapeHtml(paper.format)}</td>
     </tr>`).join('');
 }
 
@@ -470,6 +656,67 @@ rows.addEventListener('keydown', event => {
 });
 
 render();
+
+fetch('./submissions.json')
+    .then(response => response.ok ? response.json() : [])
+    .then(submissions => {
+        papers = papers.concat(submissions.map((paper, offset) => ({...paper, index: papers.length + offset})));
+        render();
+    })
+    .catch(() => {});
+
+const draftKey = 'seminal-paper-submission-draft';
+const submissionDialog = document.querySelector('#submission-dialog');
+const submissionForm = document.querySelector('#submission-form');
+const formStatus = document.querySelector('#form-status');
+
+function restoreDraft() {
+    try {
+        const draft = JSON.parse(localStorage.getItem(draftKey) || '{}');
+        Object.entries(draft).forEach(([name, value]) => {
+            const field = submissionForm.elements.namedItem(name);
+            if (field) field.value = value;
+        });
+    } catch {
+        localStorage.removeItem(draftKey);
+    }
+}
+
+function saveDraft() {
+    localStorage.setItem(draftKey, JSON.stringify(Object.fromEntries(new FormData(submissionForm))));
+}
+
+document.querySelector('#open-submission').addEventListener('click', () => {
+    restoreDraft();
+    submissionDialog.showModal();
+    submissionForm.elements.title.focus();
+});
+
+document.querySelector('#close-submission').addEventListener('click', () => submissionDialog.close());
+submissionDialog.addEventListener('click', event => {
+    if (event.target === submissionDialog) submissionDialog.close();
+});
+submissionForm.addEventListener('input', saveDraft);
+
+submissionForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!submissionForm.reportValidity()) return;
+    const paper = Object.fromEntries(new FormData(submissionForm));
+    const marker = `<!-- seminal-paper-submission:start -->\n\`\`\`json\n${JSON.stringify(paper, null, 2)}\n\`\`\`\n<!-- seminal-paper-submission:end -->`;
+    const issueUrl = new URL('https://github.com/nikhi1g/nikhi1g.github.io/issues/new');
+    issueUrl.searchParams.set('title', `[Paper Submission] ${paper.title}`);
+    issueUrl.searchParams.set('body', marker);
+    const opened = window.open(issueUrl, '_blank');
+    if (!opened) {
+        formStatus.textContent = 'Allow popups to continue.';
+        return;
+    }
+    opened.opener = null;
+    localStorage.removeItem(draftKey);
+    submissionForm.reset();
+    formStatus.textContent = '';
+    submissionDialog.close();
+});
 </script>
 </body>
 </html>
