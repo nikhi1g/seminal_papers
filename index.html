@@ -561,7 +561,7 @@ tbody tr:focus-visible {
                 <div class="form-field"><label for="submission-company">Company</label><input id="submission-company" name="company" maxlength="120"></div>
                 <div class="form-field"><label for="submission-year">Year</label><input id="submission-year" name="year" type="number" required min="1800" max="2100" inputmode="numeric"></div>
                 <div class="form-field"><label for="submission-doi">DOI link</label><input id="submission-doi" name="doi" type="url" maxlength="500" placeholder="https://doi.org/"></div>
-                <div class="form-field"><label for="submission-sector">Sector</label><select id="submission-sector" name="sector" required><option value="">Select</option><option>AI Essay</option><option>Crypto</option><option>Macro Memo</option><option>Pitch Deck</option><option>Sector Report</option><option>Short / Activist</option><option>Technical Paper</option><option>VC Doctrine</option><option>Worldview</option></select></div>
+                <div class="form-field"><label for="submission-sector">Sector</label><input id="submission-sector" name="sector" list="sector-options" required maxlength="80" autocomplete="off" placeholder="Search or add"><datalist id="sector-options"><option value="AI Essay"><option value="Crypto"><option value="Macro Memo"><option value="Pitch Deck"><option value="Sector Report"><option value="Short / Activist"><option value="Technical Paper"><option value="VC Doctrine"><option value="Worldview"></datalist></div>
                 <div class="form-field"><label for="submission-format">Format</label><select id="submission-format" name="format" required><option value="">Select</option><option>Book</option><option>Deck</option><option>Essay</option><option>Essay Series</option><option>Letter</option><option>Manifesto</option><option>Memo</option><option>Op-Ed</option><option>Paper</option><option>Presentation</option><option>Report</option><option>Research</option><option>Whitepaper</option></select></div>
             </div>
             <div class="form-actions">
@@ -661,6 +661,10 @@ fetch('./submissions.json')
     .then(response => response.ok ? response.json() : [])
     .then(submissions => {
         papers = papers.concat(submissions.map((paper, offset) => ({...paper, index: papers.length + offset})));
+        const sectorOptions = document.querySelector('#sector-options');
+        [...new Set(papers.map(paper => paper.sector))].sort().forEach(sector => {
+            if (![...sectorOptions.options].some(option => option.value === sector)) sectorOptions.append(new Option('', sector));
+        });
         render();
     })
     .catch(() => {});
