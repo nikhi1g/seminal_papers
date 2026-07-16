@@ -826,6 +826,8 @@ submissionForm.addEventListener('input', saveDraft);
 
 document.querySelector('#ask-chatgpt').addEventListener('click', () => {
     const existing = Object.fromEntries([...new FormData(submissionForm)].map(([name, value]) => [name, normalizeFieldValue(name, value)]));
+    const availableSectors = [...new Set(papers.map(paper => paper.sector).filter(Boolean))]
+        .sort((left, right) => left.localeCompare(right));
     if (!existing.url && !existing.title) {
         formStatus.textContent = 'Add a paper link first.';
         submissionForm.elements.url.focus();
@@ -837,6 +839,9 @@ document.querySelector('#ask-chatgpt').addEventListener('click', () => {
 Create one valid JSON object matching this exact schema:
 
 {"title":"string","url":"https:// direct paper or PDF link","author":"string","company":"string or empty","year":"YYYY","doi":"https://doi.org/... or empty","sector":"concise string","format":"Book|Deck|Essay|Essay Series|Letter|Manifesto|Memo|Op-Ed|Paper|Presentation|Report|Research|Whitepaper"}
+
+Existing sector taxonomy (use the exact spelling and capitalization shown):
+${JSON.stringify(availableSectors)}
 
 Rules:
 - Verify the title, author, year, DOI, and publication source.
@@ -850,6 +855,9 @@ Rules:
 - Do not escape slashes, colons, periods, ampersands, equals signs, or other URL characters.
 - Do not use Unicode escape sequences such as "\\u003a", "\\u002f", "\\u005b", or "\\u005d".
 - Do not put source links in the author, company, sector, title, year, or format values.
+- For "sector", choose exactly one value from the existing sector taxonomy whenever the paper reasonably fits.
+- Prefer a broader existing sector over creating a narrower synonym, near-duplicate, or paper-specific label.
+- Create a new sector only when none of the existing sectors clearly fits. A new sector must be a stable, concise domain label of one to four words, not a description of the individual paper.
 - Do not add keys outside the required schema.
 - Confirm internally that JSON.parse can parse the object and that both URL fields contain no Markdown syntax.
 
