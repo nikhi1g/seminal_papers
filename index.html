@@ -654,8 +654,8 @@ function render() {
         return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
     });
     rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${escapeHtml(paper.url)}" aria-label="Open ${escapeHtml(paper.title)}">
-        <td class="title-cell"><a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer" aria-label="DOI citation for ${escapeHtml(paper.title)}"><span>DOI</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
-        <td>${escapeHtml(paper.year)}</td><td>${escapeHtml(paper.author)}</td><td>${escapeHtml(paper.company || '—')}</td><td><span class="sector">${escapeHtml(paper.sector)}</span></td><td>${escapeHtml(paper.format)}</td>
+        <td class="title-cell"><a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(paper.title)}</a><span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}${paper.doi ? ` · <a href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer">DOI</a>` : ''}</span></td>
+        <td>${escapeHtml(paper.year)}</td><td>${escapeHtml(paper.author)}</td><td>${escapeHtml(paper.company || '—')}</td><td><span class="sector">${escapeHtml(paper.sector)}</span></td><td>${escapeHtml(paper.format)}${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer" aria-label="DOI citation for ${escapeHtml(paper.title)}"><span>DOI</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a>` : ''}</td>
     </tr>`).join('');
 }
 
