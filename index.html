@@ -54,43 +54,15 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
-header {
-    margin-bottom: 2.5rem;
-}
-
-.back-link {
-    display: inline-block;
-    margin-bottom: 2rem;
-    color: var(--sub);
-    font-size: 0.9rem;
-}
-
-.back-link:hover,
 .archive-list a:hover,
 .archive-list a:focus-visible {
     color: var(--acc);
 }
 
-h1 {
-    margin: 0 0 0.45rem;
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 700;
-    letter-spacing: -0.06em;
-    line-height: 0.98;
-}
-
-.count {
-    margin: 0;
-    color: var(--sub);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
 .archive-list {
     margin: 0;
-    padding: 1rem 0 0 2.1rem;
+    padding: 0;
+    list-style: none;
     border-top: 1px solid var(--line);
 }
 
@@ -126,13 +98,7 @@ h1 {
 </head>
 <body>
 <main>
-    <header>
-        <a class="back-link" href="../">← Nikhil Gupta</a>
-        <h1>Seminal Papers</h1>
-        <p class="count">89 titles</p>
-    </header>
-
-    <ol class="archive-list" aria-label="Seminal paper links">
+    <ul class="archive-list" aria-label="Seminal paper links">
             <li><a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer Electronic Cash System</a></li>
             <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></li>
             <li><a href="https://situational-awareness.ai/">Situational Awareness: The Decade Ahead</a></li>
@@ -222,7 +188,7 @@ h1 {
             <li><a href="https://x.com/jack/status/2027129697092731343">Block Goes Intelligence-Native</a></li>
             <li><a href="http://archive.computerhistory.org/resources/access/text/2012/10/102746515-05-01-acc.pdf">Fairchild Semiconductor Founding</a></li>
             <li><a href="https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1957.102664472.pdf">A Proposal to American Research and Development</a></li>
-    </ol>
+    </ul>
 </main>
 </body>
 </html>
