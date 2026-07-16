@@ -846,6 +846,8 @@ JSON_OBJECT
 
 Percent-encode the title and body query-parameter values exactly once. The decoded body must preserve the HTML comments, line breaks, JSON quotation marks, braces, and code fence exactly.
 
+Use only ASCII hyphen-minus characters in both HTML comment markers; never substitute en dashes or em dashes. Do not double-encode query values: the final URL must use "%5B" for "[", not "%255B", and "%3C" for "<", not "%253C". Opening the returned URL must show a decoded issue title beginning "[Paper Submission]", not a title beginning with "%5B".
+
 Return exactly one raw URL beginning with "https://github.com/nikhi1g/nikhi1g.github.io/issues/new?" and no other text. Do not wrap it in Markdown, brackets, parentheses, a code fence, or an HTML anchor. Do not provide the JSON separately.
 
 Existing inputs:
