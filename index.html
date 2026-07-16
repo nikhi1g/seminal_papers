@@ -737,7 +737,7 @@ rows.addEventListener('keydown', event => {
 
 render();
 
-fetch('./submissions.json')
+fetch(`./submissions.json?v=${Date.now()}`, {cache: 'no-store'})
     .then(response => response.ok ? response.json() : [])
     .then(submissions => {
         papers = papers.concat(submissions.map((paper, offset) => ({...paper, index: papers.length + offset})));
