@@ -53,10 +53,6 @@ main {
 }
 
 .page-header {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 2rem;
     margin-bottom: clamp(28px, 4vw, 52px);
 }
 
@@ -66,13 +62,6 @@ h1 {
     font-weight: 650;
     letter-spacing: -0.055em;
     line-height: 0.95;
-}
-
-.page-header p {
-    max-width: 34rem;
-    margin: 0;
-    color: var(--sub);
-    font-size: 0.95rem;
 }
 
 .toolbar {
@@ -113,13 +102,6 @@ h1 {
 #paper-search:focus {
     border-color: var(--acc);
     box-shadow: inset 3px 0 0 var(--acc);
-}
-
-.result-count {
-    min-width: 6.5rem;
-    color: var(--sub);
-    font-size: 0.82rem;
-    text-align: right;
 }
 
 .table-wrap {
@@ -187,11 +169,18 @@ td {
 }
 
 tbody tr {
+    cursor: pointer;
     transition: background-color 140ms ease;
 }
 
-tbody tr:hover {
+tbody tr:hover,
+tbody tr:focus-visible {
     background: color-mix(in srgb, var(--acc) 5%, transparent);
+}
+
+tbody tr:focus-visible {
+    outline: 2px solid var(--acc);
+    outline-offset: -2px;
 }
 
 .title-cell {
@@ -255,18 +244,8 @@ tbody tr:hover {
         margin-bottom: 1.8rem;
     }
 
-    .page-header p {
-        margin-top: 0.8rem;
-        font-size: 0.82rem;
-    }
-
     .toolbar {
         display: block;
-    }
-
-    .result-count {
-        margin-top: 0.55rem;
-        text-align: left;
     }
 
     th:not(:first-child),
@@ -297,14 +276,12 @@ tbody tr:hover {
 <main>
     <header class="page-header">
         <h1>Seminal Papers</h1>
-        <p>Essays, memos, papers, and decks that changed how industries think.</p>
     </header>
     <div class="toolbar">
         <label class="search-wrap" for="paper-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
             <input id="paper-search" type="search" placeholder="Search titles, authors, companies, sectors…" autocomplete="off">
         </label>
-        <div class="result-count" id="result-count" aria-live="polite">89 results</div>
     </div>
     <div class="table-wrap">
         <table aria-label="Seminal papers">
@@ -425,7 +402,6 @@ const papers = sourceItems.map((item, index) => {
 
 const rows = document.querySelector('#paper-rows');
 const search = document.querySelector('#paper-search');
-const count = document.querySelector('#result-count');
 let sortState = {key: null, direction: 0};
 
 function fuzzyScore(text, query) {
@@ -461,11 +437,10 @@ function render() {
         const right = sortState.key === 'year' ? Number(b.year) : b[sortState.key].toLowerCase();
         return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
     });
-    rows.innerHTML = ranked.map(paper => `<tr>
+    rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${paper.url}" aria-label="Open ${paper.title}">
         <td class="title-cell"><a href="${paper.url}">${paper.title}</a>${paper.doi ? `<a class="doi" href="${paper.doi}" aria-label="DOI citation for ${paper.title}">DOI</a>` : ''}<span class="mobile-meta">${paper.year} · ${paper.author} · ${paper.sector}</span></td>
         <td>${paper.year}</td><td>${paper.author}</td><td>${paper.company || '—'}</td><td><span class="sector">${paper.sector}</span></td><td>${paper.format}</td>
     </tr>`).join('');
-    count.textContent = query ? `89 results · ranked` : '89 results';
 }
 
 search.addEventListener('input', () => {
@@ -481,6 +456,18 @@ document.querySelectorAll('.sort-button').forEach(button => button.addEventListe
     document.querySelectorAll('.sort-button').forEach(candidate => candidate.querySelector('.sort-mark').textContent = candidate === button && sortState.direction ? (sortState.direction === 1 ? '↑' : '↓') : '↕');
     render();
 }));
+
+rows.addEventListener('click', event => {
+    if (event.target.closest('a')) return;
+    const row = event.target.closest('tr');
+    if (row) window.location.href = row.dataset.url;
+});
+
+rows.addEventListener('keydown', event => {
+    if (event.target.closest('a') || !['Enter', ' '].includes(event.key)) return;
+    event.preventDefault();
+    window.location.href = event.target.closest('tr').dataset.url;
+});
 
 render();
 </script>
