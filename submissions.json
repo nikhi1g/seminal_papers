@@ -28,5 +28,15 @@
     "year": "2019",
     "sector": "Genome editing",
     "format": "Paper"
+  },
+  {
+    "title": "The Efficient Market Hypothesis and Its Critics",
+    "url": "https://www.princeton.edu/~ceps/workingpapers/91malkiel.pdf",
+    "doi": "https://doi.org/10.1257/089533003321164958",
+    "author": "Burton G. Malkiel",
+    "company": "American Economic Association",
+    "year": "2003",
+    "sector": "Financial Economics",
+    "format": "Paper"
   }
 ]
