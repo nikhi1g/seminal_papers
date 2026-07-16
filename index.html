@@ -86,8 +86,25 @@ h1 {
     transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
 }
 
+.add-button {
+    border-radius: 0;
+}
+
+.add-button svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.8;
+}
+
 .add-button:hover,
-.add-button:focus-visible,
+.add-button:focus-visible {
+    border-color: var(--fg);
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+}
+
 .dialog-close:hover,
 .dialog-close:focus-visible {
     border-color: var(--fg);
@@ -347,13 +364,26 @@ tbody tr:focus-visible {
 }
 
 .doi {
-    display: inline-block;
-    margin-left: 0.4rem;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    gap: 0.25rem;
+    margin-top: 0.45rem;
     color: var(--sub);
     font-size: 0.66rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+.doi svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
 }
 
 .sector {
@@ -433,7 +463,7 @@ tbody tr:focus-visible {
 <main>
     <header class="page-header">
         <h1>Seminal Papers</h1>
-        <button class="add-button" id="open-submission" type="button" aria-label="Submit a paper">+</button>
+        <button class="add-button" id="open-submission" type="button" aria-label="Submit a paper"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
     </header>
     <div class="toolbar">
         <label class="search-wrap" for="paper-search">
@@ -624,7 +654,7 @@ function render() {
         return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
     });
     rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${escapeHtml(paper.url)}" aria-label="Open ${escapeHtml(paper.title)}">
-        <td class="title-cell"><a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer" aria-label="DOI citation for ${escapeHtml(paper.title)}">DOI</a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
+        <td class="title-cell"><a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer" aria-label="DOI citation for ${escapeHtml(paper.title)}"><span>DOI</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
         <td>${escapeHtml(paper.year)}</td><td>${escapeHtml(paper.author)}</td><td>${escapeHtml(paper.company || '—')}</td><td><span class="sector">${escapeHtml(paper.sector)}</span></td><td>${escapeHtml(paper.format)}</td>
     </tr>`).join('');
 }
