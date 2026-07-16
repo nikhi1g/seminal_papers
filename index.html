@@ -624,7 +624,7 @@ function render() {
         return (left < right ? -1 : left > right ? 1 : 0) * sortState.direction || a.index - b.index;
     });
     rows.innerHTML = ranked.map(paper => `<tr tabindex="0" role="link" data-url="${escapeHtml(paper.url)}" aria-label="Open ${escapeHtml(paper.title)}">
-        <td class="title-cell"><a href="${escapeHtml(paper.url)}">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" aria-label="DOI citation for ${escapeHtml(paper.title)}">DOI</a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
+        <td class="title-cell"><a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(paper.title)}</a>${paper.doi ? `<a class="doi" href="${escapeHtml(paper.doi)}" target="_blank" rel="noopener noreferrer" aria-label="DOI citation for ${escapeHtml(paper.title)}">DOI</a>` : ''}<span class="mobile-meta">${escapeHtml(paper.year)} · ${escapeHtml(paper.author)} · ${escapeHtml(paper.sector)}</span></td>
         <td>${escapeHtml(paper.year)}</td><td>${escapeHtml(paper.author)}</td><td>${escapeHtml(paper.company || '—')}</td><td><span class="sector">${escapeHtml(paper.sector)}</span></td><td>${escapeHtml(paper.format)}</td>
     </tr>`).join('');
 }
@@ -646,13 +646,13 @@ document.querySelectorAll('.sort-button').forEach(button => button.addEventListe
 rows.addEventListener('click', event => {
     if (event.target.closest('a')) return;
     const row = event.target.closest('tr');
-    if (row) window.location.href = row.dataset.url;
+    if (row) window.open(row.dataset.url, '_blank', 'noopener,noreferrer');
 });
 
 rows.addEventListener('keydown', event => {
     if (event.target.closest('a') || !['Enter', ' '].includes(event.key)) return;
     event.preventDefault();
-    window.location.href = event.target.closest('tr').dataset.url;
+    window.open(event.target.closest('tr').dataset.url, '_blank', 'noopener,noreferrer');
 });
 
 render();
