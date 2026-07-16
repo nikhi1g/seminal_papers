@@ -506,7 +506,7 @@ tbody tr:focus-visible {
     <div class="toolbar">
         <label class="search-wrap" for="paper-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-            <input id="paper-search" type="search" placeholder="Search titles, authors, companies, sectors…" autocomplete="off">
+            <input id="paper-search" type="search" placeholder="Search titles, authors, companies, sectors…" autocomplete="off" aria-keyshortcuts="/">
         </label>
     </div>
     <div class="table-wrap">
@@ -656,6 +656,15 @@ let papers = sourceItems.map((item, index) => {
 const rows = document.querySelector('#paper-rows');
 const search = document.querySelector('#paper-search');
 let sortState = {key: null, direction: 0};
+
+document.addEventListener('keydown', event => {
+    const target = event.target;
+    const isTyping = target.matches('input, textarea, select') || target.isContentEditable;
+    if (event.key !== '/' || isTyping || document.querySelector('#submission-dialog').open || event.metaKey || event.ctrlKey || event.altKey) return;
+    event.preventDefault();
+    search.focus();
+    search.select();
+});
 
 function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[character]));
