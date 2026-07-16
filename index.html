@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Seminal papers, essays, memos, decks, and reports.">
+<title>Seminal Papers</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%233b82f6%22/></svg>">
+<style>
+:root {
+    --bg: #ffffff;
+    --fg: #24292f;
+    --acc: #0969da;
+    --sub: #57606a;
+    --line: #d0d7de;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #22272e;
+        --fg: #adbac7;
+        --acc: #539bf5;
+        --sub: #768390;
+        --line: #636e7b;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    width: min(640px, calc(100% - 40px));
+    margin: clamp(24px, 5vw, 64px) auto;
+    padding: clamp(24px, 5vw, 48px);
+    outline: 1px solid var(--sub);
+    border-radius: 12px;
+    animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+    margin-bottom: 2.5rem;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: var(--sub);
+    font-size: 0.9rem;
+}
+
+.back-link:hover,
+.archive-list a:hover,
+.archive-list a:focus-visible {
+    color: var(--acc);
+}
+
+h1 {
+    margin: 0 0 0.45rem;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+}
+
+.count {
+    margin: 0;
+    color: var(--sub);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.archive-list {
+    margin: 0;
+    padding: 1rem 0 0 2.1rem;
+    border-top: 1px solid var(--line);
+}
+
+.archive-list li {
+    padding: 0.62rem 0 0.7rem 0.45rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+}
+
+.archive-list a {
+    color: inherit;
+    text-decoration: none;
+    text-decoration-color: var(--acc);
+    text-underline-offset: 0.18em;
+    transition: color 0.2s ease;
+}
+
+.archive-list a:hover,
+.archive-list a:focus-visible {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    main {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 1.5rem;
+        border-radius: 0;
+        outline: none;
+    }
+}
+</style>
+</head>
+<body>
+<main>
+    <header>
+        <a class="back-link" href="../">← Nikhil Gupta</a>
+        <h1>Seminal Papers</h1>
+        <p class="count">89 titles</p>
+    </header>
+
+    <ol class="archive-list" aria-label="Seminal paper links">
+            <li><a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer Electronic Cash System</a></li>
+            <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></li>
+            <li><a href="https://situational-awareness.ai/">Situational Awareness: The Decade Ahead</a></li>
+            <li><a href="https://www.journals.uchicago.edu/doi/10.1086/260062">The Pricing of Options and Corporate Liabilities</a></li>
+            <li><a href="https://a16z.com/why-software-is-eating-the-world/">Why Software Is Eating the World</a></li>
+            <li><a href="https://www.tesla.com/en_in/secret-master-plan">The Secret Tesla Motors Master Plan (just between you and me)</a></li>
+            <li><a href="https://ethereum.org/en/whitepaper/">Ethereum Whitepaper: A Next-Generation Smart Contract Platform</a></li>
+            <li><a href="http://news.bbc.co.uk/2/shared/bsp/hi/pdfs/18_06_08_internet%20tidal%20wave.pdf">The Internet Tidal Wave</a></li>
+            <li><a href="https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf">The Anatomy of a Large-Scale Hypertextual Web Search Engine</a></li>
+            <li><a href="https://www.sequoiacap.com/article/rip-good-times/">RIP Good Times</a></li>
+            <li><a href="https://www.superinvesting.com/pdf/The-Superinvestors-of-Graham-and-Doddsville-by-Warren-Buffett.pdf">The Superinvestors of Graham-and-Doddsville</a></li>
+            <li><a href="https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</a></li>
+            <li><a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a></li>
+            <li><a href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners (GPT-3)</a></li>
+            <li><a href="https://w3.org/History/1989/proposal.html">Information Management: A Proposal</a></li>
+            <li><a href="https://www.michael-burry.com/scion-capital-michael-burrys-letters-to-investors/">Scion Capital Letters (Subprime Short)</a></li>
+            <li><a href="https://blakemasters.tumblr.com/peter-thiels-cs183-startup">Zero to One</a></li>
+            <li><a href="https://www.sequoiacap.com/wp-content/uploads/sites/6/2022/06/Adapting-to-Endure_Sequoia-Capital-2022.pdf">Adapting to Endure</a></li>
+            <li><a href="https://paulgraham.com/ds.html">Do Things That Don't Scale</a></li>
+            <li><a href="https://paulgraham.com/startupideas.html">How to Get Startup Ideas</a></li>
+            <li><a href="https://www.wsj.com/articles/peter-thiel-competition-is-for-losers-1410535536">Competition Is for Losers</a></li>
+            <li><a href="https://stratechery.com/2015/aggregation-theory/">Aggregation Theory</a></li>
+            <li><a href="https://abovethecrowd.com/2012/11/13/all-markets-are-not-created-equal-10-factors-to-consider-when-evaluating-digital-marketplaces/">All Markets Are Not Created Equal / Note to Self on TAM</a></li>
+            <li><a href="https://kk.org/thetechnium/1000-true-fans/">1,000 True Fans</a></li>
+            <li><a href="https://hbr.org/2016/04/blitzscaling">Blitzscaling</a></li>
+            <li><a href="https://cdixon.org/2010/01/03/the-next-big-thing-will-start-out-looking-like-a-toy">The Next Big Thing Will Start Out Looking Like a Toy</a></li>
+            <li><a href="https://onezero.medium.com/why-decentralization-matters-5e3f79f7638e">Why Decentralization Matters</a></li>
+            <li><a href="https://www.eugenewei.com/blog/2018/5/21/invisible-asymptotes">Invisible Asymptotes</a></li>
+            <li><a href="https://foundersfund.com/the-future/">What Happened to the Future?</a></li>
+            <li><a href="https://greylock.com/greymatter/the-new-moats/">The New Moats</a></li>
+            <li><a href="https://www.forentrepreneurs.com/saas-metrics-2/">SaaS Metrics 2.0</a></li>
+            <li><a href="https://hackmd.io/@HaydenAdams/HJ9jLsfTz">Uniswap Whitepaper (Automated Market Maker)</a></li>
+            <li><a href="https://arxiv.org/abs/2001.08361">Scaling Laws for Neural Language Models</a></li>
+            <li><a href="https://arxiv.org/abs/2203.15556">Training Compute-Optimal Large Language Models (Chinchilla)</a></li>
+            <li><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1: Incentivizing Reasoning Capability via RL</a></li>
+            <li><a href="https://karpathy.medium.com/software-2-0-a64152b37c35">Software 2.0</a></li>
+            <li><a href="https://moores.samaltman.com/">Moore's Law for Everything</a></li>
+            <li><a href="https://a16z.com/ai-will-save-the-world/">Why AI Will Save the World</a></li>
+            <li><a href="https://www.darioamodei.com/essay/machines-of-loving-grace">Machines of Loving Grace</a></li>
+            <li><a href="https://www.oaktreecapital.com/insights/memo/sea-change">Sea Change</a></li>
+            <li><a href="https://www.oaktreecapital.com/insights/memo/the-race-to-the-bottom">The Race to the Bottom</a></li>
+            <li><a href="https://static.bullionstar.com/blogs/uploads/2022/03/Bretton-Woods-III-Zoltan-Pozsar.pdf">Bretton Woods III</a></li>
+            <li><a href="https://asiabusinesscouncil.org/wp-content/uploads/2020/10/The-Changing-World-Order_Ray-Dalio.pdf">The Changing World Order</a></li>
+            <li><a href="https://www.gmo.com/americas/research-library/waiting-for-the-last-dance/">Waiting for the Last Dance</a></li>
+            <li><a href="https://www.nytimes.com/2008/10/17/opinion/17buffett.html">Buy American. I Am.</a></li>
+            <li><a href="https://www.lynalden.com/fraying-petrodollar-system/">The Fraying of the US Global Currency Reserve System</a></li>
+            <li><a href="https://factsaboutherbalife.com/">Who Wants to Be a Millionaire? (Herbalife Short)</a></li>
+            <li><a href="https://www.marketfolly.com/2010/05/david-einhorns-ira-sohn-presentation.html">Lehman Brothers Short Thesis (Ira Sohn)</a></li>
+            <li><a href="https://www.govinfo.gov/content/pkg/CHRG-107hhrg77986/pdf/CHRG-107hhrg77986.pdf">Enron Short Thesis</a></li>
+            <li><a href="https://muddywatersresearch.com/wp-content/uploads/2011/06/MW_TRE_060211.pdf">Sino-Forest Corporation (Strong Sell)</a></li>
+            <li><a href="https://hindenburgresearch.com/nikola/">Nikola: How to Parlay an Ocean of Lies</a></li>
+            <li><a href="https://hindenburgresearch.com/adani/">Adani Group: How the World's 3rd Richest Man Is Pulling the Largest Con</a></li>
+            <li><a href="https://citronresearch.com/wp-content/uploads/2015/10/Valeant-Philador-and-RandO-final-a.pdf">Valeant: The Pharmaceutical Enron?</a></li>
+            <li><a href="https://www.bondcap.com/report/pdf/Internet_Trends_2019.pdf">Internet Trends Report</a></li>
+            <li><a href="https://www.bondcap.com/report/pdf/Trends_Artificial_Intelligence.pdf">Trends – Artificial Intelligence</a></li>
+            <li><a href="https://www.ben-evans.com/presentations">Mobile Is Eating the World</a></li>
+            <li><a href="https://www.ark-invest.com/big-ideas-2024">Big Ideas</a></li>
+            <li><a href="https://www.slideshare.net/PitchDeckCoach/airbnb-first-pitch-deck-editable">Airbnb Series A Pitch Deck</a></li>
+            <li><a href="https://www.slideshare.net/slideshow/uber-pitch-deck-49157401/49157401">UberCab Pitch Deck</a></li>
+            <li><a href="https://sriramk.com/memos/roelof-youtube.pdf">YouTube Investment Memo</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/The_Sovereign_Individual">The Sovereign Individual</a></li>
+            <li><a href="https://a16z.com/the-techno-optimist-manifesto/">The Techno-Optimist Manifesto</a></li>
+            <li><a href="https://www.cold-takes.com/most-important-century/">The Most Important Century</a></li>
+            <li><a href="https://slatestarcodex.com/2014/07/30/meditations-on-moloch/">Meditations on Moloch</a></li>
+            <li><a href="https://whatweowethefuture.com/">What We Owe the Future</a></li>
+            <li><a href="https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities">AGI Ruin: A List of Lethalities</a></li>
+            <li><a href="https://www.theatlantic.com/science/archive/2019/07/we-need-new-science-progress/594946/">We Need a New Science of Progress</a></li>
+            <li><a href="https://gwern.net/scaling-hypothesis">The Scaling Hypothesis</a></li>
+            <li><a href="https://www.usv.com/writing/2016/08/fat-protocols/">Fat Protocols</a></li>
+            <li><a href="https://vijayboyapati.medium.com/the-bullish-case-for-bitcoin-6ecc8bdecc1">The Bullish Case for Bitcoin</a></li>
+            <li><a href="https://www.nbt.vc/blog/the-rise-of-the-solo-capitalists">The Rise of the Solo Capitalists</a></li>
+            <li><a href="https://www.socialcapital.com/">IPO 2.0 / SPAC Investor Letters</a></li>
+            <li><a href="https://theleanstartup.com/">The Lean Startup / Minimum Viable Product</a></li>
+            <li><a href="https://www.bridgewater.com/big-debt-crises">Principles for Navigating Big Debt Crises</a></li>
+            <li><a href="https://www.gmo.com/americas/research-library/reinvesting-when-terrified/">Reinvesting When Terrified</a></li>
+            <li><a href="https://aletteraday.substack.com/p/letter-42-david-einhorn-2002">Fooling Some of the People All of the Time (Allied Capital Short)</a></li>
+            <li><a href="https://cdn.gmtresearch.com/public-ckfinder/Short-sellers/Unknown%20author/Luckin%20Coffee_Anonymous.pdf">Luckin Coffee (Anonymous Report Distributed by Muddy Waters)</a></li>
+            <li><a href="https://www.slideshare.net/slideshow/facebooks-original-pitch-deckpdf/259577117">Facebook (thefacebook) Media Kit / Early Pitch</a></li>
+            <li><a href="https://www.battery.com/powered/">OpenCloud Report</a></li>
+            <li><a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition (ResNet)</a></li>
+            <li><a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations (word2vec)</a></li>
+            <li><a href="https://solana.com/solana-whitepaper.pdf">Solana: A New Architecture for a High Performance Blockchain</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Superintelligence:_Paths,_Dangers,_Strategies">Superintelligence: Paths, Dangers, Strategies</a></li>
+            <li><a href="https://sites.santafe.edu/~wbarthur/Papers/HBR.pdf">Increasing Returns and the New World of Business</a></li>
+            <li><a href="https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf">A Mathematical Theory of Communication</a></li>
+            <li><a href="https://www.sec.gov/news/studies/2009/oig-509/exhibit-0293.pdf">The World's Largest Hedge Fund Is a Fraud</a></li>
+            <li><a href="https://x.com/jack/status/2027129697092731343">Block Goes Intelligence-Native</a></li>
+            <li><a href="http://archive.computerhistory.org/resources/access/text/2012/10/102746515-05-01-acc.pdf">Fairchild Semiconductor Founding</a></li>
+            <li><a href="https://www.computerhistory.org/pdp-1/_media/pdf/DEC.pdp_1.1957.102664472.pdf">A Proposal to American Research and Development</a></li>
+    </ol>
+</main>
+</body>
+</html>
