@@ -291,12 +291,28 @@ dialog::backdrop {
     width: 100%;
     border: 1px solid var(--line);
     border-radius: 0;
-    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    padding: 0.85rem 5.4rem 0.85rem 2.8rem;
     background: transparent;
     color: var(--fg);
     font: inherit;
     outline: none;
     transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+#paper-search::-webkit-search-cancel-button {
+    display: none;
+}
+
+.search-count {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    color: var(--sub);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
 #paper-search:focus {
@@ -507,6 +523,7 @@ tbody tr:focus-visible {
         <label class="search-wrap" for="paper-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
             <input id="paper-search" type="search" placeholder="Search titles, authors, companies, sectors…" autocomplete="off" aria-keyshortcuts="/">
+            <span class="search-count" id="search-count" aria-live="polite"></span>
         </label>
     </div>
     <div class="table-wrap">
@@ -655,6 +672,8 @@ let papers = sourceItems.map((item, index) => {
 
 const rows = document.querySelector('#paper-rows');
 const search = document.querySelector('#paper-search');
+const searchCount = document.querySelector('#search-count');
+const MATCH_SCORE = 70;
 let sortState = {key: null, direction: 0};
 
 document.addEventListener('keydown', event => {
@@ -694,8 +713,11 @@ function fuzzyScore(text, query) {
 }
 
 function render() {
-    const query = search.value;
+    const query = search.value.trim();
     const ranked = papers.map(paper => ({...paper, score: fuzzyScore(Object.values(paper).join(' '), query)}));
+    const matches = query ? ranked.filter(paper => paper.score >= MATCH_SCORE).length : papers.length;
+    searchCount.textContent = `${matches} / ${papers.length}`;
+    searchCount.setAttribute('aria-label', `${matches} of ${papers.length} matching papers`);
     ranked.sort((a, b) => {
         if (query) return b.score - a.score || a.index - b.index;
         if (!sortState.direction) return a.index - b.index;
