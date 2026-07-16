@@ -38,5 +38,15 @@
     "year": "2003",
     "sector": "Financial Economics",
     "format": "Paper"
+  },
+  {
+    "title": "Smoking and Carcinoma of the Lung: Preliminary Report",
+    "url": "https://www.bmj.com/content/bmj/2/4682/739.full.pdf",
+    "doi": "https://doi.org/10.1136/bmj.2.4682.739",
+    "author": "Richard Doll; A. Bradford Hill",
+    "company": "British Medical Journal",
+    "year": "1950",
+    "sector": "Public Health",
+    "format": "Paper"
   }
 ]
