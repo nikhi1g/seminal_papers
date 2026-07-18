@@ -530,12 +530,12 @@ tbody tr:focus-visible {
         <table aria-label="Seminal papers">
             <colgroup><col style="width: 37%"><col style="width: 7%"><col style="width: 16%"><col style="width: 13%"><col style="width: 16%"><col style="width: 11%"></colgroup>
             <thead><tr>
-                <th><button class="sort-button" data-key="title">Title <span class="sort-mark">↕</span></button></th>
-                <th><button class="sort-button" data-key="year">Year <span class="sort-mark">↕</span></button></th>
-                <th><button class="sort-button" data-key="author">Author <span class="sort-mark">↕</span></button></th>
-                <th><button class="sort-button" data-key="company">Company <span class="sort-mark">↕</span></button></th>
-                <th><button class="sort-button" data-key="sector">Sector <span class="sort-mark">↕</span></button></th>
-                <th><button class="sort-button" data-key="format">Format <span class="sort-mark">↕</span></button></th>
+                <th><button class="sort-button" data-key="title">Title <span class="sort-mark"></span></button></th>
+                <th><button class="sort-button" data-key="year">Year <span class="sort-mark"></span></button></th>
+                <th><button class="sort-button" data-key="author">Author <span class="sort-mark"></span></button></th>
+                <th><button class="sort-button" data-key="company">Company <span class="sort-mark"></span></button></th>
+                <th><button class="sort-button" data-key="sector">Sector <span class="sort-mark"></span></button></th>
+                <th><button class="sort-button" data-key="format">Format <span class="sort-mark"></span></button></th>
             </tr></thead>
             <tbody id="paper-rows"></tbody>
         </table>
@@ -733,7 +733,7 @@ function render() {
 
 search.addEventListener('input', () => {
     sortState = {key: null, direction: 0};
-    document.querySelectorAll('.sort-mark').forEach(mark => mark.textContent = '↕');
+    document.querySelectorAll('.sort-mark').forEach(mark => mark.textContent = '');
     render();
 });
 
@@ -741,7 +741,7 @@ document.querySelectorAll('.sort-button').forEach(button => button.addEventListe
     const key = button.dataset.key;
     sortState = sortState.key === key ? {key, direction: sortState.direction === 1 ? -1 : sortState.direction === -1 ? 0 : 1} : {key, direction: 1};
     search.value = '';
-    document.querySelectorAll('.sort-button').forEach(candidate => candidate.querySelector('.sort-mark').textContent = candidate === button && sortState.direction ? (sortState.direction === 1 ? '↑' : '↓') : '↕');
+    document.querySelectorAll('.sort-button').forEach(candidate => candidate.querySelector('.sort-mark').textContent = candidate === button && sortState.direction ? (sortState.direction === 1 ? '↑' : '↓') : '');
     render();
 }));
 
