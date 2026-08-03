@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {extractReadableText, isSafeSourceUrl, normalizePaper} from './index.js';
+import worker, {extractReadableText, isSafeSourceUrl, normalizePaper, verifyDoi} from './index.js';
 
 test('rejects local and credential-bearing source URLs', () => {
     assert.equal(isSafeSourceUrl('https://example.com/paper.pdf'), true);
@@ -21,6 +21,33 @@ test('normalizes a structured paper response', () => {
     }, 'https://example.com/mapreduce.pdf', ['Technical Paper']);
     assert.equal(paper.year, '2004');
     assert.equal(paper.url, 'https://example.com/mapreduce.pdf');
+});
+
+test('clears a DOI that Crossref cannot verify', async () => {
+    const paper = {
+        title: 'MapReduce: Simplified Data Processing on Large Clusters',
+        year: '2004',
+        doi: 'https://doi.org/10.1145/1251252.1251260',
+    };
+    const verified = await verifyDoi(paper, async () => new Response('', {status: 404}));
+    assert.equal(verified.doi, '');
+});
+
+test('keeps a DOI only when Crossref title and year match', async () => {
+    const paper = {
+        title: 'A Seminal Systems Paper',
+        year: '2004',
+        doi: 'https://doi.org/10.1000/example',
+    };
+    const matchingFetch = async () => Response.json({
+        message: {title: ['A Seminal Systems Paper'], issued: {'date-parts': [[2004]]}},
+    });
+    assert.equal((await verifyDoi(paper, matchingFetch)).doi, paper.doi);
+
+    const wrongYearFetch = async () => Response.json({
+        message: {title: ['A Seminal Systems Paper'], issued: {'date-parts': [[2008]]}},
+    });
+    assert.equal((await verifyDoi(paper, wrongYearFetch)).doi, '');
 });
 
 test('health endpoint permits the production site origin', async () => {
