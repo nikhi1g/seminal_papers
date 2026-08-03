@@ -340,8 +340,8 @@ async function handleAutofill(request, env) {
         ? `\nAuthoritative PubMed metadata (use these values exactly for title, author, year, and DOI):\n${JSON.stringify(authoritativeMetadata)}`
         : '';
     const sectorInstruction = sectors.length
-        ? `Prefer a sector from this list when it is genuinely appropriate: ${JSON.stringify(sectors)}. Otherwise return a concise new sector label.`
-        : 'Return one concise, stable sector label.';
+        ? `Return the most specific subject-area sector. Reuse a label from this list only when it precisely names the subject: ${JSON.stringify(sectors)}. Do not use a document format or generic label merely because it is listed; create a concise new sector when needed.`
+        : 'Return one concise, specific subject-area sector label.';
 
     const response = await fetch(CEREBRAS_ENDPOINT, {
         method: 'POST',
