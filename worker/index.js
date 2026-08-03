@@ -174,9 +174,37 @@ export function parsePubmedSummary(payload, id) {
     return metadata.title && metadata.author && metadata.year ? metadata : null;
 }
 
+export function parseEuropePmcSummary(payload, id) {
+    const record = payload?.resultList?.result?.find(candidate => String(candidate.pmid || candidate.id) === id);
+    if (!record) return null;
+    const doi = String(record.doi || '').trim();
+    const metadata = {
+        title: String(record.title || '').replace(/\s+/g, ' ').trim(),
+        author: String(record.authorString || '').replace(/\.\s*$/, '').trim(),
+        year: String(record.pubYear || '').trim(),
+        doi: doi ? `https://doi.org/${doi}` : '',
+    };
+    return metadata.title && metadata.author && /^\d{4}$/.test(metadata.year) ? metadata : null;
+}
+
 async function pubmedMetadata(sourceUrl) {
     const id = pubmedIdFromUrl(sourceUrl);
     if (!id) return null;
+    try {
+        const query = encodeURIComponent(`EXT_ID:${id} AND SRC:MED`);
+        const response = await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${query}&format=json`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'SeminalPapersMetadataBot/1.0 (+https://github.com/nikhi1g/seminal_papers)',
+            },
+        });
+        if (response.ok) {
+            const metadata = parseEuropePmcSummary(await response.json(), id);
+            if (metadata) return metadata;
+        }
+    } catch {
+        // Fall through to NCBI E-utilities.
+    }
     try {
         const response = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${id}&retmode=json`, {
             headers: {

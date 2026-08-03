@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {extractCitationMetadata, extractReadableText, isSafeSourceUrl, normalizePaper, parsePubmedSummary, verifyDoi} from './index.js';
+import worker, {extractCitationMetadata, extractReadableText, isSafeSourceUrl, normalizePaper, parseEuropePmcSummary, parsePubmedSummary, verifyDoi} from './index.js';
 
 test('rejects local and credential-bearing source URLs', () => {
     assert.equal(isSafeSourceUrl('https://example.com/paper.pdf'), true);
@@ -38,6 +38,20 @@ test('extracts authoritative bibliographic metadata from a PubMed summary', () =
     }}}, '42062');
     assert.deepEqual(metadata, {
         title: 'The spandrels of San Marco and the Panglossian paradigm: a critique of the adaptationist programme.',
+        author: 'Gould SJ, Lewontin RC',
+        year: '1979',
+        doi: 'https://doi.org/10.1098/rspb.1979.0086',
+    });
+});
+
+test('extracts authoritative bibliographic metadata from Europe PMC', () => {
+    const metadata = parseEuropePmcSummary({resultList: {result: [{
+        id: '42062', pmid: '42062', pubYear: '1979', doi: '10.1098/rspb.1979.0086',
+        title: 'The spandrels of San Marco and the Panglossian paradigm.',
+        authorString: 'Gould SJ, Lewontin RC.',
+    }]}}, '42062');
+    assert.deepEqual(metadata, {
+        title: 'The spandrels of San Marco and the Panglossian paradigm.',
         author: 'Gould SJ, Lewontin RC',
         year: '1979',
         doi: 'https://doi.org/10.1098/rspb.1979.0086',
