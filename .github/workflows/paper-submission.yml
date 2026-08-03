@@ -5,6 +5,7 @@ on:
     types: [opened, reopened]
 
 permissions:
+  actions: write
   contents: write
   issues: write
   pull-requests: write
@@ -77,3 +78,9 @@ jobs:
         run: |
           gh pr merge "paper-submission/issue-${ISSUE_NUMBER}" --squash --delete-branch
           gh issue comment "${ISSUE_NUMBER}" --body "Auto-merged since this submission was opened by the repo owner. The site will update shortly."
+
+      - name: Deploy owner submissions
+        if: github.event.issue.user.login == 'nikhi1g'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run static.yml --ref main

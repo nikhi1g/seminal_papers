@@ -1,0 +1,17 @@
+{
+  "name": "seminal-papers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node .github/scripts/build-site.mjs _site",
+    "test": "node --test worker/index.test.mjs",
+    "worker:dev": "wrangler dev",
+    "worker:deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.118.0"
+  },
+  "overrides": {
+    "undici": "^7.29.0"
+  }
+}

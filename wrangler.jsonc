@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "seminal-papers-api",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-03",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://nikhi1g.github.io,http://localhost:4173,http://127.0.0.1:4173,http://localhost:8787,http://127.0.0.1:8787",
+    "CEREBRAS_MODEL": "gpt-oss-120b",
+    "GITHUB_REPOSITORY": "nikhi1g/seminal_papers"
+  },
+  "ratelimits": [
+    {
+      "name": "AUTOFILL_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
