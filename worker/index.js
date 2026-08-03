@@ -228,7 +228,7 @@ function paperSchema(sectors) {
             company: {type: 'string'},
             year: {type: 'integer', minimum: 1800, maximum: 2100},
             doi: {type: 'string'},
-            sector: sectors.length ? {type: 'string', enum: sectors} : {type: 'string'},
+            sector: {type: 'string', minLength: 1, maxLength: 80},
             format: {type: 'string', enum: FORMATS},
         },
         required: ['title', 'author', 'company', 'year', 'doi', 'sector', 'format'],
@@ -252,7 +252,7 @@ export function normalizePaper(paper, sourceUrl, sectors) {
     if (!normalized.author || normalized.author.length > 1000) throw new HttpError(502, 'Cerebras did not return a usable author.');
     if (!/^\d{4}$/.test(normalized.year) || Number(normalized.year) < 1800 || Number(normalized.year) > 2100) throw new HttpError(502, 'Cerebras did not return a usable year.');
     if (!FORMATS.includes(normalized.format)) throw new HttpError(502, 'Cerebras returned an unsupported format.');
-    if (sectors.length && !sectors.includes(normalized.sector)) throw new HttpError(502, 'Cerebras returned an unsupported sector.');
+    if (!normalized.sector || normalized.sector.length > 80) throw new HttpError(502, 'Cerebras did not return a usable sector.');
     for (const key of ['title', 'author', 'company', 'sector']) {
         if (/[<>\u0000-\u001f]/.test(normalized[key])) throw new HttpError(502, `Cerebras returned invalid ${key} metadata.`);
     }
@@ -340,7 +340,7 @@ async function handleAutofill(request, env) {
         ? `\nAuthoritative PubMed metadata (use these values exactly for title, author, year, and DOI):\n${JSON.stringify(authoritativeMetadata)}`
         : '';
     const sectorInstruction = sectors.length
-        ? `Choose exactly one sector from this list: ${JSON.stringify(sectors)}.`
+        ? `Prefer a sector from this list when it is genuinely appropriate: ${JSON.stringify(sectors)}. Otherwise return a concise new sector label.`
         : 'Return one concise, stable sector label.';
 
     const response = await fetch(CEREBRAS_ENDPOINT, {

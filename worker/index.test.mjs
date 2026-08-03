@@ -67,6 +67,14 @@ test('normalizes a structured paper response', () => {
     assert.equal(paper.url, 'https://example.com/mapreduce.pdf');
 });
 
+test('allows a concise new sector when existing choices do not fit', () => {
+    const paper = normalizePaper({
+        title: 'Evolution Paper', author: 'A. Biologist', company: '',
+        year: 1979, doi: '', sector: 'Evolutionary Biology', format: 'Paper',
+    }, 'https://example.com/evolution', ['Evolutionary Economics', 'Technical Paper']);
+    assert.equal(paper.sector, 'Evolutionary Biology');
+});
+
 test('clears a DOI that Crossref cannot verify', async () => {
     const paper = {
         title: 'MapReduce: Simplified Data Processing on Large Clusters',
