@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {extractReadableText, isSafeSourceUrl, normalizePaper, verifyDoi} from './index.js';
+import worker, {extractReadableText, isSafeSourceUrl, normalizePaper, parsePubmedSummary, verifyDoi} from './index.js';
 
 test('rejects local and credential-bearing source URLs', () => {
     assert.equal(isSafeSourceUrl('https://example.com/paper.pdf'), true);
@@ -12,6 +12,21 @@ test('rejects local and credential-bearing source URLs', () => {
 test('extracts readable text while dropping active content', () => {
     const html = '<title>A &amp; B</title><style>bad</style><main>Hello <b>world</b></main><script>bad()</script>';
     assert.equal(extractReadableText(html), 'A & B Hello world');
+});
+
+test('extracts authoritative bibliographic metadata from a PubMed summary', () => {
+    const metadata = parsePubmedSummary({result: {'42062': {
+        title: 'The spandrels of San Marco and the Panglossian paradigm: a critique of the adaptationist programme.',
+        pubdate: '1979 Sep 21',
+        authors: [{name: 'Gould SJ'}, {name: 'Lewontin RC'}],
+        articleids: [{idtype: 'pubmed', value: '42062'}, {idtype: 'doi', value: '10.1098/rspb.1979.0086'}],
+    }}}, '42062');
+    assert.deepEqual(metadata, {
+        title: 'The spandrels of San Marco and the Panglossian paradigm: a critique of the adaptationist programme.',
+        author: 'Gould SJ, Lewontin RC',
+        year: '1979',
+        doi: 'https://doi.org/10.1098/rspb.1979.0086',
+    });
 });
 
 test('normalizes a structured paper response', () => {
