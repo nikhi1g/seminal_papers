@@ -228,7 +228,7 @@ function paperSchema(sectors) {
             company: {type: 'string'},
             year: {type: 'integer', minimum: 1800, maximum: 2100},
             doi: {type: 'string'},
-            sector: {type: 'string', minLength: 1, maxLength: 80},
+            sector: {type: 'string'},
             format: {type: 'string', enum: FORMATS},
         },
         required: ['title', 'author', 'company', 'year', 'doi', 'sector', 'format'],
