@@ -750,7 +750,7 @@ tbody tr:focus-visible {
             </div>
             <div class="form-actions">
                 <p class="form-status" id="form-status" aria-live="polite"></p>
-                <button class="submit-button" type="submit">Add via GitHub</button>
+                <button class="submit-button" type="submit">Continue to GitHub</button>
             </div>
         </form>
     </div>
@@ -967,7 +967,7 @@ autoPopulateButton.addEventListener('click', async () => {
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || `Autofill failed (${response.status}).`);
         applyAutofill(result);
-        formStatus.textContent = 'Filled by Cerebras. Review before adding.';
+        formStatus.textContent = 'Filled by Cerebras. Review, then continue to GitHub to authorize.';
     } catch (error) {
         formStatus.textContent = error.message || 'Autofill failed. Try again.';
     } finally {
