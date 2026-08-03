@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {extractReadableText, isSafeSourceUrl, normalizePaper, parsePubmedSummary, verifyDoi} from './index.js';
+import worker, {extractCitationMetadata, extractReadableText, isSafeSourceUrl, normalizePaper, parsePubmedSummary, verifyDoi} from './index.js';
 
 test('rejects local and credential-bearing source URLs', () => {
     assert.equal(isSafeSourceUrl('https://example.com/paper.pdf'), true);
@@ -12,6 +12,21 @@ test('rejects local and credential-bearing source URLs', () => {
 test('extracts readable text while dropping active content', () => {
     const html = '<title>A &amp; B</title><style>bad</style><main>Hello <b>world</b></main><script>bad()</script>';
     assert.equal(extractReadableText(html), 'A & B Hello world');
+});
+
+test('extracts authoritative citation metadata embedded in HTML', () => {
+    const html = `
+        <meta name="citation_title" content="The spandrels of San Marco &amp; the Panglossian paradigm">
+        <meta name="citation_authors" content="Gould SJ;Lewontin RC;">
+        <meta name="citation_date" content="09/21/1979">
+        <meta name="citation_doi" content="10.1098/rspb.1979.0086">
+    `;
+    assert.deepEqual(extractCitationMetadata(html), {
+        title: 'The spandrels of San Marco & the Panglossian paradigm',
+        author: 'Gould SJ, Lewontin RC',
+        year: '1979',
+        doi: 'https://doi.org/10.1098/rspb.1979.0086',
+    });
 });
 
 test('extracts authoritative bibliographic metadata from a PubMed summary', () => {
