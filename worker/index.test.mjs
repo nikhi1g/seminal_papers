@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import worker, {extractCitationMetadata, extractReadableText, isSafeSourceUrl, normalizePaper, parseEuropePmcSummary, parsePubmedSummary, verifyDoi} from './index.js';
+import worker, {extractCitationMetadata, extractReadableText, IncompleteMetadataError, isSafeSourceUrl, normalizePaper, parseEuropePmcSummary, parsePubmedSummary, retryIncompleteMetadata, verifyDoi} from './index.js';
 
 test('rejects local and credential-bearing source URLs', () => {
     assert.equal(isSafeSourceUrl('https://example.com/paper.pdf'), true);
@@ -73,6 +73,29 @@ test('allows a concise new sector when existing choices do not fit', () => {
         year: 1979, doi: '', sector: 'Evolutionary Biology', format: 'Paper',
     }, 'https://example.com/evolution', ['Evolutionary Economics', 'Technical Paper']);
     assert.equal(paper.sector, 'Evolutionary Biology');
+});
+
+test('retries incomplete metadata once without retrying unrelated errors', async () => {
+    let attempts = 0;
+    const recovered = await retryIncompleteMetadata(
+        async () => {
+            attempts += 1;
+            throw new IncompleteMetadataError('missing title');
+        },
+        async () => {
+            attempts += 1;
+            return 'recovered';
+        },
+    );
+    assert.equal(recovered, 'recovered');
+    assert.equal(attempts, 2);
+
+    let recoveryCalled = false;
+    await assert.rejects(() => retryIncompleteMetadata(
+        async () => { throw new Error('provider failure'); },
+        async () => { recoveryCalled = true; },
+    ), /provider failure/);
+    assert.equal(recoveryCalled, false);
 });
 
 test('clears a DOI that Crossref cannot verify', async () => {
